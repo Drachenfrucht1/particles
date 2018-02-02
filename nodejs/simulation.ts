@@ -35,7 +35,7 @@ class Simulation {
 		console.log("5");
   }
 
-  calculateCrash() {
+  calculateCrash(): void {
     var lObjects: PhysicsObject[] = this.objects;
 
     while(this.objects.length > 1) {
@@ -96,6 +96,15 @@ class Simulation {
       this.objects.push(obj);
     }
   }
+
+	createSendObjects(): SendObject[] {
+		var array = [];
+		for(var i = 0; i < this.objects.length; i++) {
+			var obj = this.objects[i];
+			array.push(new SendObject(obj.location.x, obj.location.y));
+		}
+		return array;
+	}
 }
 
 class PhysicsObject {
@@ -202,6 +211,15 @@ class Vector2D {
 
     return new Vector2D(vector.x * n, vector.y * n);
   }
+}
+
+class SendObject {
+	x: number;
+	y: number;
+	constructor(x: number, y: number) {
+		this.x = x;
+		this.y = y;
+	}
 }
 
 function getRandomNumber(max: number): number {

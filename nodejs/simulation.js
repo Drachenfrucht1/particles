@@ -8,13 +8,17 @@ var Simulation = /** @class */ (function () {
         FRAMES_PER_SECOND = frameRate;
     }
     Simulation.prototype.calculate = function () {
+        console.log("1");
         for (var i = 0; i < this.objects.length; i++) {
             this.objects[i].calculateForces(this.objects);
         }
+        console.log("2");
         for (var i = 0; i < this.objects.length; i++) {
             this.objects[i].calculateAcceleration();
         }
+        console.log("3");
         this.calculateCrash();
+        console.log("4");
         for (var i = 0; i < this.objects.length; i++) {
             if (this.objects[i].dead) {
                 this.objects = getNewArray(this.objects[i], this.objects);
@@ -23,6 +27,7 @@ var Simulation = /** @class */ (function () {
                 this.objects[i].move();
             }
         }
+        console.log("5");
     };
     Simulation.prototype.calculateCrash = function () {
         var lObjects = this.objects;
@@ -67,6 +72,14 @@ var Simulation = /** @class */ (function () {
             var obj = new PhysicsObject(getRandomNumber(this.width), getRandomNumber(this.height), getRandomNumber(1000) + 10);
             this.objects.push(obj);
         }
+    };
+    Simulation.prototype.createSendObjects = function () {
+        var array = [];
+        for (var i = 0; i < this.objects.length; i++) {
+            var obj = this.objects[i];
+            array.push(new SendObject(obj.location.x, obj.location.y));
+        }
+        return array;
     };
     return Simulation;
 }());
@@ -145,6 +158,13 @@ var Vector2D = /** @class */ (function () {
         return new Vector2D(vector.x * n, vector.y * n);
     };
     return Vector2D;
+}());
+var SendObject = /** @class */ (function () {
+    function SendObject(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return SendObject;
 }());
 function getRandomNumber(max) {
     return Math.floor(Math.random() * Math.floor(max));
