@@ -23,7 +23,7 @@ public class PhysicsObject extends Point2D {
 
   public PhysicsObject(float mass, int x, int y) {
     super(x, y);
-    this.mass = mass * 10000F;
+    this.mass = mass * Settings.WEIGHT_MULTIPLIER;
   }
 
   public void calculateSpeed() {
@@ -56,8 +56,6 @@ public class PhysicsObject extends Point2D {
         float value = (float) ((Settings.GRAVITATION_CONSTANT * mass * obj.mass) / Math.pow(b, 2));
 
         Force f1 = Force.getForceFromVectorAndValue(vecX, vecY,  getX(),  getY(), value);
-        //Force f2 = new Force( obj.getX(),  obj.getY(), f1.getX(), f1.getY());
-        //f2.negate(-1);
         forces.add(f1);
       }
     }

@@ -1,8 +1,13 @@
 package com.drachenfrucht1.spielt.renderer;
 
+import com.drachenfrucht1.spielt.GsonAdapter;
 import com.drachenfrucht1.spielt.Settings;
+import com.drachenfrucht1.spielt.Settings.Mode;
 import com.drachenfrucht1.spielt.physic.PhysicsObject;
 import com.drachenfrucht1.spielt.physic.Simulation;
+import com.drachenfrucht1.spielt.web.WebServer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -15,6 +20,8 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Dominik on 25.01.2018.
@@ -29,85 +36,107 @@ public class MainWindow extends Application {
   private double prevX;
   private double prevY;
 
+  public static boolean NOGUI = false;
   public static Simulation sim;
+  private WebServer webServer;
 
   private int frameNumber = 0;
 
   @Override
   public void start(Stage primaryStage) {
-    window = primaryStage;
+    if(Settings.MODE != Mode.web) {
+      window = primaryStage;
 
-    root = new Pane();
+      root = new Pane();
 
-    Rectangle r = new Rectangle(0, 0, Settings.WIDTH_2, Settings.HEIGHT_2);
-    r.setFill(Color.BLACK);
-    bg = new Pane();
-    bg.getChildren().addAll(r, root);
+      Rectangle r = new Rectangle(0, 0, Settings.PLAYGROUND_WIDTH, Settings.PLAYGROUND_HEIGHT);
+      r.setFill(Color.BLACK);
+      bg = new Pane();
+      bg.getChildren().addAll(r, root);
 
 
-    Scene scene = new Scene(bg, Settings.WIDTH, Settings.HEIGHT);
-    window.setScene(scene);
+      Scene scene = new Scene(bg, Settings.WIDTH, Settings.HEIGHT);
+      window.setScene(scene);
 
-    scene.setOnMousePressed(e -> {
-      prevX = e.getX();
-      prevY = e.getY();
-    });
+      scene.setOnMousePressed(e -> {
+        prevX = e.getX();
+        prevY = e.getY();
+      });
 
-    scene.setOnMouseDragged(e -> {
-      if (prevX < e.getX() && prevY < e.getY()) {
-        double a = e.getX() - prevX;
-        double b = e.getY() - prevY;
-        bg.setTranslateX(bg.getTranslateX() + a);
-        bg.setTranslateY(bg.getTranslateY() + b);
-      } else if (prevX > e.getX() && prevY > e.getY()) {
-        double a = prevX - e.getX();
-        double b = prevY - e.getY();
-        bg.setTranslateX(bg.getTranslateX() - a);
-        bg.setTranslateY(bg.getTranslateY() - b);
-      } else if (prevX > e.getX() && prevY < e.getY()) {
-        double a = prevX - e.getX();
-        double b = e.getY() - prevY;
-        bg.setTranslateX(bg.getTranslateX() - a);
-        bg.setTranslateY(bg.getTranslateY() + b);
-      } else if (prevX < e.getX() && prevY > e.getY()) {
-        double a = e.getX() - prevX;
-        double b = prevY - e.getY();
-        bg.setTranslateX(bg.getTranslateX() + a);
-        bg.setTranslateY(bg.getTranslateY() - b);
-      }
-      prevX = e.getX();
-      prevY = e.getY();
-    });
+      scene.setOnMouseDragged(e -> {
+        if (prevX < e.getX() && prevY < e.getY()) {
+          double a = e.getX() - prevX;
+          double b = e.getY() - prevY;
+          bg.setTranslateX(bg.getTranslateX() + a);
+          bg.setTranslateY(bg.getTranslateY() + b);
+        } else if (prevX > e.getX() && prevY > e.getY()) {
+          double a = prevX - e.getX();
+          double b = prevY - e.getY();
+          bg.setTranslateX(bg.getTranslateX() - a);
+          bg.setTranslateY(bg.getTranslateY() - b);
+        } else if (prevX > e.getX() && prevY < e.getY()) {
+          double a = prevX - e.getX();
+          double b = e.getY() - prevY;
+          bg.setTranslateX(bg.getTranslateX() - a);
+          bg.setTranslateY(bg.getTranslateY() + b);
+        } else if (prevX < e.getX() && prevY > e.getY()) {
+          double a = e.getX() - prevX;
+          double b = prevY - e.getY();
+          bg.setTranslateX(bg.getTranslateX() + a);
+          bg.setTranslateY(bg.getTranslateY() - b);
+        }
+        prevX = e.getX();
+        prevY = e.getY();
+      });
 
-    scene.setOnScroll(e -> {
-      if (e.getDeltaY() < 0) {
-        bg.setScaleX(bg.getScaleX() - 0.1);
-        bg.setScaleY(bg.getScaleY() - 0.1);
+      scene.setOnScroll(e -> {
+        if (e.getDeltaY() < 0) {
+          bg.setScaleX(bg.getScaleX() - 0.1);
+          bg.setScaleY(bg.getScaleY() - 0.1);
+        } else {
+          bg.setScaleX(bg.getScaleX() + 0.1);
+          bg.setScaleY(bg.getScaleY() + 0.1);
+        }
+      });
+
+      window.setOnCloseRequest(e -> {
+        e.consume();
+        System.exit(0);
+      });
+
+      window.setTitle("Gravitation Simulation - Drachenfrucht1");
+      window.setResizable(true);
+      window.show();
+
+      if (Settings.MODE == Mode.realtime) {
+        startAnimation();
+        sim.startTimer();
       } else {
-        bg.setScaleX(bg.getScaleX() + 0.1);
-        bg.setScaleY(bg.getScaleY() + 0.1);
+        for (int i = 0; i < Settings.FRAME_COUNT; i++) {
+          sim.calculations();
+          draw();
+          saveFrame();
+        }
+        System.exit(0);
       }
-    });
-
-    window.setOnCloseRequest(e -> {
-      e.consume();
-      System.exit(0);
-    });
-
-    window.setTitle("Gravitation Simulation - Drachenfrucht1");
-    window.setResizable(true);
-    window.show();
-
-    if(Settings.REALTIME) {
-      startAnimation();
-      sim.startTimer();
     } else {
-      for(int i = 0; i < Settings.FRAME_COUNT; i++) {
-        sim.calculations();
-        draw();
-        saveFrame();
-      }
-      System.exit(0);
+      webServer = new WebServer(4000);
+      GsonBuilder gsonBuilder = new GsonBuilder();
+      gsonBuilder.registerTypeAdapter(Simulation.class, new GsonAdapter());
+      Gson gson  = gsonBuilder.create();
+
+      sim.startTimer();
+
+      TimerTask t = new TimerTask() {
+        @Override
+        public void run() {
+          String json = gson.toJson(sim);
+          webServer.getConnections().forEach(c -> c.send(json));
+        }
+      };
+
+      Timer timer = new Timer();
+      timer.schedule(t, 0, (long) 1000/30);
     }
   }
 

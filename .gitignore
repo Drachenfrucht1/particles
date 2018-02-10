@@ -13,3 +13,5 @@ hs_err_pid*
 
 \.idea/
 /nodejs/node_modules
+*.iml
+target

@@ -1,8 +1,11 @@
 package com.drachenfrucht1.spielt.physic;
 
 import com.drachenfrucht1.spielt.Settings;
+import com.drachenfrucht1.spielt.Settings.Mode;
 import lombok.Getter;
 
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +22,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Simulation {
 
   private @Getter CopyOnWriteArrayList<PhysicsObject> objects = new CopyOnWriteArrayList<>();
+  private ZonedDateTime lastReset;
 
   public Simulation() {
     createObjects(Settings.OBJECT_COUNT);
   }
 
   public void startTimer() {
+    lastReset = ZonedDateTime.now();
     //Timer for physics calculations
     TimerTask task = new TimerTask() {
       @Override
       public void run() {
+        if(Settings.MODE == Mode.web) {
+          if(ChronoUnit.MINUTES.between(lastReset, ZonedDateTime.now()) >= 5) {
+            objects.clear();
+            createObjects(Settings.OBJECT_COUNT);
+            lastReset = ZonedDateTime.now();
+          }
+        }
+        if(objects.size() <= 0) {
+          createObjects(Settings.OBJECT_COUNT);
+          lastReset = ZonedDateTime.now();
+        }
         calculations();
       }
     };
@@ -48,7 +64,7 @@ public class Simulation {
       o.move();
     });
     for (PhysicsObject o : objects) {
-      if(o.getX() < 0 || o.getY() < 0 || o.getX() > Settings.WIDTH_2 || o.getY() > Settings.HEIGHT_2) {
+      if(o.getX() < 0 || o.getY() < 0 || o.getX() > Settings.PLAYGROUND_WIDTH || o.getY() > Settings.PLAYGROUND_HEIGHT) {
         o.setDead(true);
         objects.remove(o);
         System.out.println("Removed object");
@@ -135,7 +151,7 @@ public class Simulation {
   public void createObjects(int count) {
     Random r = new Random();
     for(int i = 0; i< count; i++) {
-      objects.add(new PhysicsObject(r.nextInt(1000) + 10, r.nextInt(Settings.WIDTH_2), r.nextInt(Settings.HEIGHT_2)));
+      objects.add(new PhysicsObject(r.nextInt(1000) + 10, r.nextInt(Settings.PLAYGROUND_WIDTH), r.nextInt(Settings.PLAYGROUND_HEIGHT)));
     }
   }
 }

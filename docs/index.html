@@ -1,14 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Particles - Drachenfrucht1</title>
+    <meta charset="UTF-8">
+    <title>Gravitation Viewer - Drachenfrucht1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+    </style>
 </head>
 <body>
-  ihiihihA
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-  <script src="./main.js"></script>
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper indigo lighten-1">
+                <a href="#" class="brand-logo center">Gravitation Viewer</a>
+                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                    <li><a href="http://drachenfrucht1.de">Home</a></li>
+                    <li><a href="#">Draw</a></li>
+                    <li><a class="active" href="#">Gravitation Viewer</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!--Main Content -->
+    <main class="section">
+        <a href="#modal" class="btn waves-effect waves-light right modal-trigger" style="margin-right: 10px"><i class="material-icons left">feedback</i>Give us feedback</a>
+        <div class="container" style="margin-top: 10px">
+            <div id="main" class="row">
+                <div id="container"></div>
+            </div>
+        </div>
+    </main>
+    <!--Footer -->
+    <footer class="page-footer indigo lighten-1">
+        <div class="container">
+            <div class="col 16 s12">
+                <!--Footer Content-->
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">See more</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="http://drachenfrucht1.de">Website</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://twitter.com/Drachenfrucht1_">Twitter</a></li>
+                    <li><a class="grey-text text-lighten-3" href="https://github.com/Drachenfrucht1">Github</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container ">
+                &copy; 2018 Dominik Sucker
+                <a class="grey-text text-lighten-4 right" href="https://github.com/Drachenfrucht1"><i class="material-icons">code</i> with <i class="material-icons">favorite</i> by Drachenfrucht1</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>

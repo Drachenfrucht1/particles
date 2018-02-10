@@ -16,11 +16,19 @@ public class Settings {
 
   public final static float RESISTANCE = 0; //value which will be added to the acceleration of the objects every operation
 
-  public final static int WIDTH_2 = 7500;
-  public final static int HEIGHT_2 = 7500;
+  public static int PLAYGROUND_WIDTH = 7500;
+  public static int PLAYGROUND_HEIGHT = 7500;
 
-  public final static int OBJECT_COUNT = 50;
+  public final static int OBJECT_COUNT = 10;
 
-  public final static boolean REALTIME = true;
+  public static float WEIGHT_MULTIPLIER = 10000;
+
+  public final static Mode MODE = Mode.web;
   public final static int FRAME_COUNT = 60*Settings.CALCULATIONS_PER_SECOND;//number of frames that should be rendered
+
+  public enum Mode {
+    web,
+    realtime,
+    render;
+  }
 }

@@ -26,11 +26,6 @@ public class Force extends Vector2D {
     y += f.y;
   }
 
-  public void negate(float a) {
-    x *= a;
-    y *= a;
-  }
-
   public static Force getForceFromVectorAndValue(float x, float y,int originX, int originY, float value) {
     Force f;
 
