@@ -119,24 +119,6 @@ public class MainWindow extends Application {
         }
         System.exit(0);
       }
-    } else {
-      webServer = new WebServer(4000);
-      GsonBuilder gsonBuilder = new GsonBuilder();
-      gsonBuilder.registerTypeAdapter(Simulation.class, new GsonAdapter());
-      Gson gson  = gsonBuilder.create();
-
-      sim.startTimer();
-
-      TimerTask t = new TimerTask() {
-        @Override
-        public void run() {
-          String json = gson.toJson(sim);
-          webServer.getConnections().forEach(c -> c.send(json));
-        }
-      };
-
-      Timer timer = new Timer();
-      timer.schedule(t, 0, (long) 1000/30);
     }
   }
 
