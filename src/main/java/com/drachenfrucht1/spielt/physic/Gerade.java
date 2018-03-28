@@ -61,7 +61,7 @@ public class Gerade {
              float y1 = x1 * aktuelltreffend.getG11().m;
 
              float E2länge = aktuelltreffend.getG22().Körper.getMass() * (float) Math.pow((double) aktuelltreffend.getG22().Körper.getVE(), 2) * 1 / 2;
-             ;
+
              float x2 = E2länge / (float) Math.sqrt(Math.pow(aktuelltreffend.getG22().m, 2) + 1);
              float y2 = x2 * aktuelltreffend.getG22().m;
 

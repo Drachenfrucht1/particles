@@ -33,6 +33,9 @@ public class PhysicsObject extends Point2D {
     this.sim = simulation;
   }
 
+  /**
+   * berechnet den speed
+   */
   public void calculateSpeed() {
     Anfangspunkt.setX(getX());
     Anfangspunkt.setY(getY());
