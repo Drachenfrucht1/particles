@@ -151,7 +151,7 @@ public class Simulation {
   public void createObjects(int count) {
     Random r = new Random();
     for(int i = 0; i< count; i++) {
-      objects.add(new PhysicsObject(r.nextInt(1000) + 10, r.nextInt(Settings.PLAYGROUND_WIDTH), r.nextInt(Settings.PLAYGROUND_HEIGHT)));
+      objects.add(new PhysicsObject(r.nextInt(1000) + 10, r.nextInt(Settings.PLAYGROUND_WIDTH), r.nextInt(Settings.PLAYGROUND_HEIGHT), this));
     }
   }
 }

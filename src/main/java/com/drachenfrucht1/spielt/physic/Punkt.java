@@ -92,7 +92,7 @@ public class Punkt {
         }
         String c=""+teile[1].charAt(stell);
         String neu=teile[0]+".";
-        String add="0."
+        String add="0.";
         for(int i=0;i<stell;i++){
             neu=neu+""+teile[1].charAt(i);
         }

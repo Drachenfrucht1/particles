@@ -24,9 +24,13 @@ public class PhysicsObject extends Point2D {
   private @Getter @Setter boolean dead = false;
   private @Getter @Setter Point2D Anfangspunkt;
 
-  public PhysicsObject(float mass, int x, int y) {
+  private @Getter Simulation sim;
+
+  public PhysicsObject(float mass, int x, int y, Simulation simulation) {
     super(x, y);
     this.mass = mass * Settings.WEIGHT_MULTIPLIER;
+
+    this.sim = simulation;
   }
 
   public void calculateSpeed() {
@@ -34,7 +38,7 @@ public class PhysicsObject extends Point2D {
     Anfangspunkt.setY(getY());
     Force resulting = Force.getResulting(getX(), getY(), forces);
     float acceleration = resulting.getValue() / mass;
-    //a braucht richtugn der resulting forces
+    //a braucht Richtung der resulting forces
     setV0(speed.getValue());//Betrag v0
     Vector2D direction = speed;
     direction.add(resulting);
@@ -45,7 +49,7 @@ public class PhysicsObject extends Point2D {
 
     speed = Vector2D.getVectorFromVectorAndValue(direction, speedValue);//gesamter Vektor für diese Zeiteinheit, mit a miteinbezogen
     //eig falsch, da hier Beträge simpel addiert wurden, unbeachtet ihrer richtungsverhältnise und dann der neue betrag auf die Richtung gelegt wurde, welche aber auch falsch ist, da diese
-    //ahängig von den beträgen in die jeweilige richtung ist
+    //abängig von den beträgen in die jeweilige Richtung ist
     setVE(speed.getValue());
     forces.clear();
     v0Mess();//setzt v0 auf Anfangsv relativ zur bewegungsrichtung

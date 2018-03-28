@@ -13,7 +13,7 @@ public class Gerade {
     PhysicsObject Körper;
     float tanf=0;//Zeit, die bei evtl schon vorheriger Fusion bis zum Treffen vergangen ist
 
- Gerade(float m, float c, float Defanf, float Defend,PhysicsObject Körper){
+ Gerade(float m, float c, float Defanf, float Defend, PhysicsObject Körper){
      this.m=m;
      this.c=c;
      this.Defanf=Defanf;
@@ -69,7 +69,7 @@ public class Gerade {
              float Einnere = E1länge + E2länge - Eresult.getValue();
 
              float vNeu = (float) Math.sqrt((double) Eresult.getValue() * 2 / (aktuelltreffend.getG11().Körper.getMass() + aktuelltreffend.getG22().Körper.getMass()));
-             PhysicsObject neu = new PhysicsObject(aktuelltreffend.getG11().Körper.getMass() + aktuelltreffend.getG22().Körper.getMass(), (int) aktuelltreffend.getX(), (int) aktuelltreffend.getY());
+             PhysicsObject neu = new PhysicsObject(aktuelltreffend.getG11().Körper.getMass() + aktuelltreffend.getG22().Körper.getMass(), (int) aktuelltreffend.getX(), (int) aktuelltreffend.getY(), Körper.getSim());
              neu.setV0(vNeu);//setzte v0 neu==vE
              neu.setVE(vNeu);
              ger.remove(aktuelltreffend.getG11());
@@ -80,9 +80,9 @@ public class Gerade {
              neue.gleichrichten();
              ger.add(neue);
              //verändere Körperliste
-             Simulation.objetcs.remove(aktuelltreffend.getG11().Körper);
-             Simulation.objetcs.remove(aktuelltreffend.getG22().Körper);
-             Simulation.objetcs.add(neu);
+             Körper.getSim().getObjects().remove(aktuelltreffend.getG11().Körper);
+             Körper.getSim().getObjects().remove(aktuelltreffend.getG22().Körper);
+             Körper.getSim().getObjects().add(neu);
 
          }
      }
