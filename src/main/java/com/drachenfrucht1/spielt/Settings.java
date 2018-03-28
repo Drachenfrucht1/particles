@@ -23,7 +23,7 @@ public class Settings {
 
   public static float WEIGHT_MULTIPLIER = 10000;
 
-  public final static Mode MODE = Mode.web;
+  public final static Mode MODE = Mode.realtime;
   public final static int FRAME_COUNT = 60*Settings.CALCULATIONS_PER_SECOND;//number of frames that should be rendered
 
   public enum Mode {

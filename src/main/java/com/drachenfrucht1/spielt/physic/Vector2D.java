@@ -1,6 +1,7 @@
 package com.drachenfrucht1.spielt.physic;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Dominik on 25.01.2018.
@@ -9,8 +10,8 @@ import lombok.Getter;
  */
 public class Vector2D {
 
-  protected  @Getter float x;
-  protected  @Getter float y;
+  protected  @Setter @Getter float x;
+  protected  @Setter @Getter float y;
 
   public Vector2D(float x, float y) {
     this.x = x;
